@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- 使用maven提供的SpringBoot聚合项目   -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.12.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>cn.tedu</groupId>
+    <artifactId>knows</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>knows</name>
+    <description>Demo project for Spring Boot</description>
+    <packaging>pom</packaging>
+    <!-- 父认子 -->
+    <modules>
+        <module>knows-portal</module>
+        <module>knows-generator</module>
+        <module>knows-resource</module>
+    </modules>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <!-- 相当于定义了一个变量 -->
+        <mybatis.plus.version>3.3.1</mybatis.plus.version>
+        <pagehelper.starter.version>1.2.13</pagehelper.starter.version>
+    </properties>
+
+    <!-- 父项目规定导入依赖的版本，这里并没有导入依赖 ，子项目导入依赖时不需要指定版本-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.starter.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+</project>
