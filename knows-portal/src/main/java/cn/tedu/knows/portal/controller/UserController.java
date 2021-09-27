@@ -3,8 +3,11 @@ package cn.tedu.knows.portal.controller;
 
 import cn.tedu.knows.portal.model.User;
 import cn.tedu.knows.portal.service.IUserService;
+import cn.tedu.knows.portal.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +42,11 @@ public class UserController {
     @GetMapping("/master")
     public List<User> getTeachers(){
         return userService.getTeachers();
+    }
+
+    @GetMapping("/me")
+    public UserVo getUserVo(@AuthenticationPrincipal UserDetails userDetails){
+        return userService.getCurrentUserVo(userDetails.getUsername());
     }
 
 }

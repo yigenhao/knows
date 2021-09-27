@@ -2,6 +2,7 @@ package cn.tedu.knows.portal.mapper;
 
 import cn.tedu.knows.portal.model.Permission;
 import cn.tedu.knows.portal.model.User;
+import cn.tedu.knows.portal.vo.UserVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -31,5 +32,9 @@ public interface UserMapper extends BaseMapper<User> {
             " left join permission p on rp.permission_id=p.id" +
             " where u.id=#{id}")
     List<Permission> findUserPermissionsById(Integer id);
+
+    //更具用户名那个查询UserVo类型对象
+    @Select("select id,username,nickname from user where username={username}")
+    UserVo findUserVoByUsername(String username);
 
 }

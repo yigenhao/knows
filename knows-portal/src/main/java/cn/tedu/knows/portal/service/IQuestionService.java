@@ -23,4 +23,10 @@ public interface IQuestionService extends IService<Question> {
     //学生发布问题
     void saveQuestion(QuestionVo questionVo,String username);
 
+    //根据用户id查询问题数
+    Integer getQuestionNumbers(Integer id);
+
+    //根据用户id查询
+//    Integer countCollectesById(Integer id);
+
 }

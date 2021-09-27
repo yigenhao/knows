@@ -2,7 +2,9 @@ package cn.tedu.knows.portal.service;
 
 import cn.tedu.knows.portal.model.User;
 import cn.tedu.knows.portal.vo.RegisterVo;
+import cn.tedu.knows.portal.vo.UserVo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 import java.util.Map;
@@ -24,5 +26,9 @@ public interface IUserService extends IService<User> {
 
     //查询所有讲师的Map集合
     Map<String,User> getTeacherMap();
+
+    //根据用户名详情获取UserVo对象
+    UserVo getCurrentUserVo(String username);
+
 
 }

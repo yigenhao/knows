@@ -7,8 +7,10 @@ import cn.tedu.knows.portal.model.Classroom;
 import cn.tedu.knows.portal.model.User;
 import cn.tedu.knows.portal.mapper.UserMapper;
 import cn.tedu.knows.portal.model.UserRole;
+import cn.tedu.knows.portal.service.IQuestionService;
 import cn.tedu.knows.portal.service.IUserService;
 import cn.tedu.knows.portal.vo.RegisterVo;
+import cn.tedu.knows.portal.vo.UserVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -143,5 +146,22 @@ UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
             getTeachers();
         }
         return teacherMap;
+    }
+
+    //
+    @Resource
+    private IQuestionService questionService;
+
+    @Override
+    public UserVo getCurrentUserVo(String username) {
+        User user = userMapper.findUserByUsername(username);
+        Integer count = questionService.getQuestionNumbers(user.getId());
+        UserVo userVo = new UserVo();
+        userVo.setId(user.getId())
+                .setNickname(user.getNickname())
+                .setUsername(username)
+                .setQuestions(count)
+                .setCollections(0);
+        return userVo;
     }
 }
