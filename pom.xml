@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <!-- 使用maven提供的SpringBoot聚合项目   -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -15,31 +14,59 @@
     <name>knows</name>
     <description>Demo project for Spring Boot</description>
     <packaging>pom</packaging>
-    <!-- 父认子 -->
     <modules>
-        <module>knows-portal</module>
-        <module>knows-generator</module>
         <module>knows-resource</module>
+        <module>gateway</module>
     </modules>
-
     <properties>
         <java.version>1.8</java.version>
-        <!-- 相当于定义了一个变量 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <spring-cloud-alibaba.version>2.2.2.RELEASE</spring-cloud-alibaba.version>
         <mybatis.plus.version>3.3.1</mybatis.plus.version>
-        <pagehelper.starter.version>1.2.13</pagehelper.starter.version>
+        <pagehelper.starter.version>1.3.0</pagehelper.starter.version>
+        <knows.commons.version>0.0.1-SNAPSHOT</knows.commons.version>
+        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
+        <spring-security-jwt.version>1.0.10.RELEASE</spring-security-jwt.version>
     </properties>
-
-    <!-- 父项目规定导入依赖的版本，这里并没有导入依赖 ，子项目导入依赖时不需要指定版本-->
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-extension</artifactId>
-                <version>${mybatis.plus.version}</version>
+                <groupId>cn.tedu</groupId>
+                <artifactId>knows-commons</artifactId>
+                <version>${knows.commons.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
                 <version>${mybatis.plus.version}</version>
             </dependency>
             <dependency>
@@ -52,8 +79,25 @@
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>${pagehelper.starter.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-jwt</artifactId>
+                <version>${spring-security-jwt.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
-
 </project>

@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.page.PageParams;
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.TagName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,8 @@ import java.util.Map;
  * @since 2021-09-17
  */
 @Service
-public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> implements IQuestionService {
+public class
+QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> implements IQuestionService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -158,5 +160,31 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         queryWrapper.eq("delete_status",0);
         Integer count = questionMapper.selectCount(queryWrapper);
         return count;
+    }
+
+    @Override
+    public PageInfo<Question> getTeacherQuestions(String username, Integer pageNum, Integer pageSize) {
+        //1.根据用户名返回用户信息
+        User user = userMapper.findUserByUsername(username);
+        //分页
+        PageHelper.startPage(pageNum,pageSize);
+        List<Question> questions = questionMapper.findTeacherQuestions(user.getId());
+
+        //根据Question对象的tagName属性获取问题列表中所有的标签集合
+        for (Question question:questions) {
+            List<Tag> tags = tagName2Tags(question.getTagNames());
+            question.setTags(tags);
+        }
+        return new PageInfo<>(questions);
+
+    }
+
+    @Override
+    public Question getQuestionById(Integer id) {
+        Question question = questionMapper.selectById(id);
+        List<Tag> tags = tagName2Tags(question.getTagNames());
+        question.setTags(tags);
+        return question;
+
     }
 }

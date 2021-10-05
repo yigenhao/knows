@@ -6,6 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -70,6 +73,12 @@ public class Answer implements Serializable {
      */
     @TableField("accept_status")
     private Integer acceptStatus;
+
+    /**
+     * 当前回答的所有评论
+     */
+    @TableField(exist = false)
+    private List<Comment> comments = new ArrayList<>();
 
 
 }

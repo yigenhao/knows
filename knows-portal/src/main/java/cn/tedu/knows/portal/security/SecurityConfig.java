@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login.html")       //指定登录页面
                 .loginProcessingUrl("/login")   //设置登录提交路径
                 .failureUrl("/login.html?error")//登录失败时跳转的网页
-                .defaultSuccessUrl("/index_student.html")   //登录成功时默认跳转网页即用户未指定访问路径时
+                .defaultSuccessUrl("/index.html")   //登录成功时默认跳转网页即用户未指定访问路径时
                 .and()  //登录设置完毕
                 .logout()   //登出设置
                 .logoutUrl("/logout")   //登出访问路径

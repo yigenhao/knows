@@ -29,4 +29,10 @@ public interface IQuestionService extends IService<Question> {
     //根据用户id查询
 //    Integer countCollectesById(Integer id);
 
+    //根据讲师用户名分页查询讲师任务列表
+    PageInfo<Question> getTeacherQuestions(String username,
+                                           Integer pageNum,Integer pageSize);
+    //根据问题id查询对应question
+    Question getQuestionById(Integer id);
+
 }

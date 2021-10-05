@@ -1,6 +1,7 @@
 package cn.tedu.knows.portal.mapper;
 
 import cn.tedu.knows.portal.model.Permission;
+import cn.tedu.knows.portal.model.Role;
 import cn.tedu.knows.portal.model.User;
 import cn.tedu.knows.portal.vo.UserVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -36,5 +37,12 @@ public interface UserMapper extends BaseMapper<User> {
     //更具用户名那个查询UserVo类型对象
     @Select("select id,username,nickname from user where username={username}")
     UserVo findUserVoByUsername(String username);
+
+    @Select("select r.id,r.name" +
+            " from user u" +
+            " left join user_role ur on u.id=ur.user_id" +
+            " left join role r on r.id=ur.role_id" +
+            " where u.id=#{id}")
+    List<Role> findUserRoleById(Integer id);
 
 }

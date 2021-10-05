@@ -8,15 +8,12 @@ import cn.tedu.knows.portal.vo.QuestionVo;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -63,6 +60,34 @@ public class QuestionController {
         questionService.saveQuestion(questionVo, userDetails.getUsername());
         return "ok";
 
+
+    }
+
+    //显示讲师首页任务列表
+    @GetMapping("/teacher")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
+    public PageInfo<Question> teacher(@AuthenticationPrincipal UserDetails userDetails,Integer pageNum){
+        if (pageNum == null){
+            pageNum = 1;
+        }
+        PageInfo<Question> pageInfo = questionService.getTeacherQuestions(userDetails.getUsername(), pageNum, 8);
+        return pageInfo;
+
+
+    }
+
+    //获取question的id
+    /*
+        restful风格
+        /{id}的含义时匹配任何在/v1/question之后的内容
+    */
+    @GetMapping("/{id}")
+    public Question getQuestion(@PathVariable Integer id){
+        if (id == null){
+            throw new ServiceException("问题id无效");
+        }
+        Question question = questionService.getQuestionById(id);
+        return question;
 
     }
 }

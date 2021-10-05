@@ -2,13 +2,16 @@ package cn.tedu.knows.portal.service.impl;
 
 import cn.tedu.knows.portal.mapper.UserMapper;
 import cn.tedu.knows.portal.model.Permission;
+import cn.tedu.knows.portal.model.Role;
 import cn.tedu.knows.portal.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,6 +21,7 @@ import java.util.List;
  * @create 2021-09-18 11:11
  */
 @Component
+@Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserMapper userMapper;
@@ -42,6 +46,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             for (Permission p : userPermissions){
                 auth[i++] = p.getName();
             }
+            //添加用户角色信息到auth
+            List<Role> roles = userMapper.findUserRoleById(user.getId());
+            auth = Arrays.copyOf(auth, auth.length + roles.size());
+             for(Role role:roles){
+                 auth[i++] = role.getName();
+             }
             //4.将用户信息封装在UserDetails对象中
             UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
                     .username(user.getUsername()) //用户名
@@ -50,6 +60,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     .accountLocked(user.getLocked() == 1)   //设置账户是否锁定（数据苦衷全部未锁定）
                     .disabled(user.getEnabled() == 0)       //设置账户是否被封
                     .build();
+             log.debug("登录用户信息为:{}" + userDetails);
             //5.返回UserDetails对象
             return userDetails;
         }
